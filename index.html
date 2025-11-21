@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop – Action Camera Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <style>
+        /* বেসিক রিসেট এবং ফন্ট */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SolaimanLipi', Arial, sans-serif; /* বাংলা ফন্ট */
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* কন্টেইনার */
+        .container {
+            max-width: 600px; /* মোবাইল-ফার্স্ট লুক */
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            overflow-x: hidden;
+        }
+
+        /* হেডার */
+        header {
+            background-color: #fff;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header h1 { font-size: 1.5rem; color: #2c3e50; }
+
+        /* --- আকর্ষণীয় হিরো সেকশন --- */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            /* সুন্দর ব্যাকগ্রাউন্ড গ্রেডিয়েন্ট */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .hero-img-container {
+            margin: 20px 0;
+            /* প্রোডাক্ট ছবিতে হালকা ভাসমান অ্যানিমেশন */
+            animation: float 3s ease-in-out infinite;
+        }
+        .hero img {
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .price-tag {
+            font-size: 1.3rem;
+            margin: 15px 0;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        .new-price {
+            color: #e74c3c;
+            font-weight: 900;
+            font-size: 1.8rem;
+        }
+
+        /* অর্ডার বাটন স্টাইল */
+        .btn-order {
+            display: inline-block;
+            background: linear-gradient(to right, #e74c3c, #c0392b); /* বাটনে গ্রেডিয়েন্ট */
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+            animation: pulse 2s infinite;
+            margin: 15px 0;
+            cursor: pointer;
+            border: none;
+            width: 90%;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .btn-order:active { transform: scale(0.98); }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        /* গ্যারান্টি বক্স */
+        .guarantee-box {
+            background-color: #fff9c4;
+            padding: 15px;
+            text-align: center;
+            margin: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #f57f17;
+            border: 1px solid #fff176;
+        }
+
+        /* সাধারণ সেকশন স্টাইল */
+        .section-title {
+            text-align: center;
+            margin: 40px 0 25px;
+            font-size: 1.6rem;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #e74c3c;
+        }
+        .content-section {
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        
+        /* --- Swiper Slider Styles --- */
+        .swiper {
+            width: 100%;
+            padding-bottom: 30px; /* প্যাজিনেশন ডটের জন্য জায়গা */
+        }
+        .swiper-slide {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        /* প্রোডাক্ট স্লাইডার স্পেসিফিক */
+        .product-swiper .swiper-slide img {
+            height: 300px; /* ছবির উচ্চতা ফিক্সড রাখা */
+        }
+        /* প্যাজিনেশন ডট কালার */
+        .swiper-pagination-bullet-active {
+            background-color: #e74c3c !important;
+        }
+
+        /* ভিডিও প্লেসহোল্ডার */
+        .video-placeholder {
+            width: 100%;
+            height: 220px;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            background-image: url('https://placehold.co/600x400/000000/ffffff?text=Video+Thumbnail');
+            background-size: cover;
+            position: relative;
+        }
+        .video-play-btn {
+            font-size: 3rem;
+            color: #e74c3c;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ফিচার লিস্ট */
+        .feature-list li {
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            margin-bottom: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: flex-start;
+            border-radius: 6px;
+        }
+        .feature-list li::before {
+            content: '✅';
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .feature-card {
+            background: #fff;
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-card h4 { color: #e74c3c; margin-bottom: 8px; font-size: 1.1rem;}
+        .feature-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+
+        /* --- রিভিউ/টেস্টিমোনিয়াল স্লাইডার কার্ড --- */
+        .testimonial-swiper .swiper-slide {
+            padding: 10px;
+        }
+        .review-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
+            text-align: left;
+            width: 100%;
+            height: 100%; /* কার্ডগুলো সমান উচ্চতার রাখতে */
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .user-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 15px;
+            border: 2px solid #e74c3c;
+        }
+        .stars { color: #f1c40f; letter-spacing: 2px;}
+        .review-text { font-style: italic; color: #555; font-size: 0.95rem;}
+
+        /* অর্ডার ফর্ম */
+        .order-form-container {
+            background-color: #fff;
+            padding: 25px 20px;
+            border-top: 5px solid #e74c3c;
+            margin-top: 30px;
+            background: linear-gradient(to bottom, #fff, #f9f9f9);
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus { border-color: #e74c3c; outline: none; }
+
+        .shipping-options label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #eee;
+            transition: all 0.2s;
+        }
+        .shipping-options label:hover { border-color: #e74c3c; }
+        .shipping-options input { margin-right: 10px; width: auto; }
+
+        .order-summary {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border: 2px dashed #e74c3c;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 8px;
+        }
+        .total-row {
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: #e74c3c;
+            border-bottom: none;
+            padding-top: 10px;
+        }
+
+        /* ফুটার এবং ফ্লোটিং বাটন */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #2c3e50;
+            color: #bdc3c7;
+            margin-top: 30px;
+        }
+        footer p { margin-bottom: 5px; }
+        .floating-wa {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(to bottom right, #25D366, #128C7E);
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+            font-size: 32px;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
+            transition: transform 0.3s;
+        }
+        .floating-wa:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>My Camera Shop</h1>
+    </header>
+
+    <div class="hero">
+        <h2>🎥 4K Ultra HD Action Camera</h2>
+        <p style="color: #555;">আপনার অ্যাডভেঞ্চারের সেরা সঙ্গী</p>
+        
+        <div class="hero-img-container">
+            <img src="https://placehold.co/600x500/2c3e50/white?text=4K+Action+Camera+Premium" alt="Action Camera Main">
+        </div>
+        
+        <div class="price-tag">
+            <span class="old-price">৳3800</span>
+            <span class="new-price">৳2500</span>
+        </div>
+        
+        <a href="#order" class="btn-order">🛒 অর্ডার করুন এখন</a>
+    </div>
+
+    <div class="guarantee-box">
+        <h3>🛡️ ১২ দিনের নিশ্চিন্ত রিপ্লেসমেন্ট গ্যারান্টি!</h3>
+    </div>
+
+    <div class="content-section">
+        <h3 class="section-title">প্রোডাক্ট এর কিছু ছবি</h3>
+        <div class="swiper product-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <img src="https://placehold.co/400x300/e67e22/white?text=Front+View+HD" alt="Camera Front">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://placehold.co/400x300/3498db/white?text=Back+Screen" alt="Camera Back">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://placehold.co/400x300/9b59b6/white?text=Side+Port+View" alt="Camera Side">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://placehold.co/400x300/2ecc71/white?text=Waterproof+Case" alt="Camera Case">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://placehold.co/400x300/f1c40f/white?text=All+Accessories" alt="Accessories">
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <div class="content-section" style="margin-top: 20px;">
+        <h3 class="section-title">বিস্তারিত ভিডিও দেখুন</h3>
+        <div class="video-placeholder">
+            <div class="video-play-btn">▶</div>
+            <p style="margin-top: 10px;">Video Review Loading...</p>
+        </div>
+        <div style="text-align: center;">
+            <a href="#order" class="btn-order" style="font-size: 1.1rem; padding: 10px 25px;">🛒 অর্ডার করতে ক্লিক করুন</a>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h3 class="section-title">কেন এই ক্যামেরা সেরা?</h3>
+        <ul class="feature-list">
+            <li><strong>সেরা বাজেট ডিল:</strong> মাত্র ২৫০০ টাকায় 4K মানের ক্যামেরা অবিশ্বাস্য!</li>
+            <li><strong>সোশ্যাল মিডিয়া রেডি:</strong> ইউটিউব, ফেসবুক রিলস বা টিকটকের জন্য পারফেক্ট।</li>
+            <li><strong>আল্ট্রা পোর্টেবল:</strong> এত ছোট ও হালকা যে পকে্তেই রাখা যায়।</li>
+            <li><strong>ওয়াটারপ্রুফিং:</strong> পানির নিচে ৩০ মিটার পর্যন্ত শুট করার ক্ষমতা।</li>
+            <li><strong>ওয়াইফাই সাপোর্ট:</strong> সরাসরি মোবাইলে ছবি ও ভিডিও শেয়ার করার সুবিধা।</li>
+        </ul>
+    </div>
+
+    <div class="content-section">
+        <h3 class="section-title">কি কি সুবিধা পাচ্ছেন!</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <span class="feature-icon">📸</span>
+                <h4>4K Resolution</h4>
+                <p>ক্রিস্টাল ক্লিয়ার ডিটেইলস</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🔋</span>
+                <h4>Long Battery</h4>
+                <p>টানা ৯০ মিনিট রেকর্ডিং</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎥</span>
+                <h4>Smooth Video</h4>
+                <p>ইলেকট্রনিক ইমেজ স্ট্যাবিলাইজেশন</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">💧</span>
+                <h4>Waterproof</h4>
+                <p>ভয়হীন আন্ডারওয়াটার শুট</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h3 class="section-title">কাস্টমারদের মতামত! (১০+)</h3>
+        
+        <div class="swiper testimonial-swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/3498db/fff?text=R" class="user-img" alt="User">
+                            <div><strong>রাইসা খাতুন</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"ভ্রমণের জন্য সেরা। হালকা এবং ওয়াটারপ্রুফ কেসটা দারুণ কাজ করে। খুব সন্তুষ্ট।"</p>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/e74c3c/fff?text=A" class="user-img" alt="User">
+                            <div><strong>আরিফ হাসান</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"২৫০০ টাকায় এই কোয়ালিটি বিশ্বাসই হয় না! আমার ইউটিউব চ্যানেলের জন্য পারফেক্ট।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/2ecc71/fff?text=S" class="user-img" alt="User">
+                            <div><strong>সাকিব আল হাসান</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"বাইক রাইডিং এর ভিডিও করার জন্য নিয়েছি। হেলমেট মাউন্ট সহ আসে, ভিডিও খুব স্টেবল।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/9b59b6/fff?text=N" class="user-img" alt="User">
+                            <div><strong>নাবিলা ইসলাম</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"কক্সবাজার ট্যুরে পানির নিচের ভিডিও করেছি, অসাধারণ এসেছে। ধন্যবাদ ভাইয়া।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/f1c40f/fff?text=T" class="user-img" alt="User">
+                            <div><strong>তানভীর আহমেদ</strong><br><span class="stars">⭐⭐⭐⭐☆</span></div>
+                        </div>
+                        <p class="review-text">"প্রাইস অনুযায়ী বেস্ট। ব্যাটারি ব্যাকআপ আরেকটু বেশি হলে ভালো হতো, তবে ওভারঅল ভালো।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/34495e/fff?text=F" class="user-img" alt="User">
+                            <div><strong>ফারহানা মিলি</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"ডেলিভারি খুব ফাস্ট ছিল। ক্যামেরা হাতে পেয়ে আমি খুবই হ্যাপি। ছবিগুলো খুব শার্প।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/e67e22/fff?text=J" class="user-img" alt="User">
+                            <div><strong>জামিল হোসেন</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"কম দামে ভ্লগিং সেটআপ খুঁজছিলাম। এর চেয়ে ভালো অপশন আর নেই। সাউন্ড কোয়ালিটিও মন্দ না।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/1abc9c/fff?text=P" class="user-img" alt="User">
+                            <div><strong>পাপিয়া সুলতানা</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"সেলারের ব্যবহার খুব ভালো। প্রোডাক্ট জেনুইন। সবাই চোখ বন্ধ করে নিতে পারেন।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/7f8c8d/fff?text=R" class="user-img" alt="User">
+                            <div><strong>রাফি উল্লাহ</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"ওয়াইফাই দিয়ে ফোনে কানেক্ট করা খুব সহজ। সাথে সাথে সব ছবি ইনস্টাগ্রামে দিতে পারি।"</p>
+                    </div>
+                </div>
+                 <div class="swiper-slide">
+                    <div class="review-card">
+                        <div class="user-info">
+                            <img src="https://placehold.co/50x50/c0392b/fff?text=M" class="user-img" alt="User">
+                            <div><strong>মাহিনুর রহমান</strong><br><span class="stars">⭐⭐⭐⭐⭐</span></div>
+                        </div>
+                        <p class="review-text">"গিফট করার জন্য নিয়েছিলাম। ছোট ভাই খুব পছন্দ করেছে। ধন্যবাদ এত সুন্দর প্রোডাক্টের জন্য।"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <div id="order" class="order-form-container">
+        <h3 class="section-title" style="margin-top:0; border:none;">আপনার তথ্য দিন এবং অর্ডার কনফার্ম করুন</h3>
+        <br>
+        <form action="https://formspree.io/f/mkgklkga" method="POST">
+            <div class="form-group">
+                <label>আপনার নাম *</label>
+                <input type="text" name="name" placeholder="পূর্ণ নাম লিখুন" required>
+            </div>
+            <div class="form-group">
+                <label>আপনার ঠিকানা *</label>
+                <textarea name="address" rows="3" placeholder="থানা ও জেলা সহ পূর্ণ ঠিকানা" required style="resize: vertical;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>মোবাইল নম্বর *</label>
+                <input type="tel" name="phone" placeholder="সচল মোবাইল নম্বর (English এ)" required pattern="[0-9]{11}" title="১১ ডিজিটের মোবাইল নম্বর দিন">
+            </div>
+
+            <div class="form-group shipping-options">
+                <label style="font-weight: bold; margin-bottom: 10px; display:block; background:none; border:none; padding:0;">শিপিং এরিয়া সিলেক্ট করুন:</label>
+                <label>
+                    <input type="radio" name="shipping_area" value="Inside Dhaka (100tk)" checked onchange="updateTotal(100)"> 
+                    <span>ঢাকার ভিতরে (ডেলিভারি চার্জ ১০০৳)</span>
+                </label>
+                <label>
+                    <input type="radio" name="shipping_area" value="Outside Dhaka (150tk)" onchange="updateTotal(150)"> 
+                    <span>ঢাকার বাহিরে (ডেলিভারি চার্জ ১৫০৳)</span>
+                </label>
+            </div>
+
+            <div class="order-summary">
+                <h4>অর্ডার সামারি</h4>
+                <div class="summary-row">
+                    <span>4K Action Camera x 1</span>
+                    <span>2500৳</span>
+                </div>
+                <div class="summary-row">
+                    <span>ডেলিভারি চার্জ</span>
+                    <span id="shipping-cost">100৳</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span>সর্বমোট পরিশোধ করতে হবে</span>
+                    <span id="total-price">2600৳</span>
+                </div>
+                <input type="hidden" name="total_payable" id="hidden-total" value="2600tk">
+            </div>
+
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px; text-align: center;">
+                * আমরা সারাদেশে ক্যাশ অন ডেলিভারি দিচ্ছি। পণ্য হাতে পেয়ে টাকা পরিশোধ করবেন।
+            </p>
+
+            <button type="submit" class="btn-order" style="width: 100%; margin:0;">অর্ডার কনফার্ম করুন</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>© 2025 My Camera Shop. All rights reserved.</p>
+        <p>হটলাইন: <strong>01715257588</strong> (সকাল ১০টা - রাত ১০টা)</p>
+    </footer>
+
+    <a href="https://wa.me/8801715257588?text=আমি+4K+Action+Camera+টি+অর্ডার+করতে+চাই।" class="floating-wa" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/>
+        </svg>
+    </a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    // ১. প্রোডাক্ট স্লাইডার চালু করা
+    const productSwiper = new Swiper('.product-swiper', {
+        loop: true, // লুপ হবে
+        autoplay: {
+            delay: 2500, // ২.৫ সেকেন্ড পর পর অটো স্লাইড হবে
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    // ২. কাস্টমার রিভিউ স্লাইডার চালু করা
+    const testimonialSwiper = new Swiper('.testimonial-swiper', {
+        slidesPerView: 1, // মোবাইলে একটা করে দেখাবে
+        spaceBetween: 20,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            // একটু বড় স্ক্রিনে (ট্যাবলেট) একসাথে কিছুটা পরের স্লাইড দেখা যাবে
+            500: {
+                slidesPerView: 1.2,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // ৩. অর্ডার টোটাল ক্যালকুলেশন
+    function updateTotal(shippingCost) {
+        const productPrice = 2500;
+        const total = productPrice + shippingCost;
+        
+        // ডিসপ্লে আপডেট
+        document.getElementById('shipping-cost').innerText = shippingCost + '৳';
+        document.getElementById('total-price').innerText = total + '৳';
+        
+        // হিডেন ইনপুট আপডেট (যা ফর্মে সাবমিট হবে)
+        document.getElementById('hidden-total').value = total + 'tk';
+    }
+</script>
+
+</body>
+</html>
